@@ -1,3 +1,6 @@
+### Clean
+!**/src/**/*.class
+
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
