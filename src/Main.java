@@ -14,8 +14,10 @@ public class Main {
             scoreboard.print();
             switch (someGame.askPlayAgain()) {
                 case "YES" -> { }
-                case "CHANGE_DIFFICULTY" ->
-                        someGame.selectDifficulty();
+                case "CHANGE_DIFFICULTY" -> {
+                    if (someGame.selectDifficulty() == null)
+                        break runner;
+                }
                 default -> {
                     break runner;
                 }

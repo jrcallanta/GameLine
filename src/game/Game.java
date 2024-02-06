@@ -39,7 +39,10 @@ public abstract class Game {
     public void printInstructions() {
         printInstructions(InstructionDepth.FULL);
     }
-    public void selectDifficulty() {
+    public Difficulty getDifficulty() {
+        return this.difficulty;
+    }
+    public Difficulty selectDifficulty() {
         Scanner scanner = new Scanner(System.in);
 
         question: while (true) {
@@ -72,6 +75,7 @@ public abstract class Game {
             }
         }
         System.out.println();
+        return this.difficulty;
     }
 
     public String askPlayAgain() {
