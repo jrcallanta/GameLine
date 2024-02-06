@@ -7,7 +7,7 @@ import java.util.List;
 public class Scoreboard {
     final int MAX_WIDTH = 58;
     static private Score latest;
-    private HashMap<String, List<Score>> scoreboard;
+    final private HashMap<String, List<Score>> scoreboard;
 
 
     public Scoreboard () {

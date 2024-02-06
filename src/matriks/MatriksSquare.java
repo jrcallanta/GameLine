@@ -130,7 +130,7 @@ public class MatriksSquare {
     }
 
     public void print() {
-        System.out.println(this.toString());
+        System.out.println(this);
     }
 
     public int getMatrixSize() {

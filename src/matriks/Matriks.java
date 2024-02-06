@@ -55,7 +55,7 @@ public class Matriks extends Game {
         System.out.print("FLIP: ");
         Scanner scanner = new Scanner(System.in);
         String cmd = scanner.nextLine();
-        Pattern cmdPat = Pattern.compile("(([R|C])([1-" + this.matriks.getMatrixSize() + "])+[\s*]?|QUIT|Q)", Pattern.CASE_INSENSITIVE);
+        Pattern cmdPat = Pattern.compile("(([R|C])([1-" + this.matriks.getMatrixSize() + "])+[ *]?|QUIT|Q)", Pattern.CASE_INSENSITIVE);
         Matcher cmdMat = cmdPat.matcher(cmd);
         while(true) {
             // Find if Valid Cmd Exists
@@ -67,10 +67,10 @@ public class Matriks extends Game {
             }
 
             // Check if entire Cmd is Only Valid Cmd's
-            String cmds = "";
-            do cmds += cmdMat.group(1);
+            StringBuilder cmds = new StringBuilder();
+            do cmds.append(cmdMat.group(1));
             while (cmdMat.find());
-            if (!cmd.equals(cmds)) {
+            if (!cmd.equals(cmds.toString())) {
                 printInstructions(Game.InstructionDepth.SHORT);
                 cmd = scanner.nextLine();
                 cmdMat = cmdPat.matcher(cmd);
