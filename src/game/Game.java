@@ -1,17 +1,36 @@
 package game;
 
-import java.util.Scanner;
+import menu.Menu;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Game {
     protected Difficulty difficulty;
+
     public enum InstructionDepth {
         FULL, SHORT, TURN
     }
+    final private Menu playAgain;
+    final private Menu difficultyChange;
 
     public Game() {
         this.printInstructions();
-        this.selectDifficulty();
+
+        this.difficultyChange = new Menu();
+        this.difficultyChange.setPrompt("CHOOSE DIFFICULTY");
+        this.difficultyChange.addOption("EASY", "E", Arrays.asList("e", "easy"));
+        this.difficultyChange.addOption("MEDIUM", "M", Arrays.asList("m", "medium"));
+        this.difficultyChange.addOption("HARD", "H", Arrays.asList("h", "hard"));
+        this.difficultyChange.addSecretOption("QUIT", List.of("quit"));
+
+        this.playAgain = new Menu();
+        this.playAgain.setPrompt("PLAY AGAIN?");
+        this.playAgain.addOption("YES", "Y", Arrays.asList("y", "yes"));
+        this.playAgain.addOption("NO", "N", Arrays.asList("n", "no"));
+        this.playAgain.addOption("CHANGE_DIFFICULTY", "D", Arrays.asList("d"));
+        this.playAgain.addSecretOption("QUIT", Arrays.asList("quit"));
     }
 
     protected void countDown() {
@@ -33,7 +52,6 @@ public abstract class Game {
     abstract public Score play();
     abstract public void reset();
     abstract public String getGameName();
-
     abstract public void printInstructions(InstructionDepth depth);
 
     public void printInstructions() {
@@ -43,65 +61,28 @@ public abstract class Game {
         return this.difficulty;
     }
     public Difficulty selectDifficulty() {
-        Scanner scanner = new Scanner(System.in);
-
-        question: while (true) {
-            System.out.println();
-            System.out.println("CHOOSE DIFFICULTY:");
-            System.out.println("E) EASY");
-            System.out.println("M) MEDIUM");
-            System.out.println("H) HARD");
-            System.out.println();
-            System.out.print("> ");
-
-            switch (scanner.nextLine().toLowerCase().trim()) {
-                case "e" -> {
-                    this.difficulty = Difficulty.EASY;
-                    break question;
-                }
-                case "m" -> {
-                    this.difficulty = Difficulty.MEDIUM;
-                    break question;
-                }
-                case "h" -> {
-                    this.difficulty = Difficulty.HARD;
-                    break question;
-                }
-                case "quit" -> {
-                    this.difficulty = null;
-                    break question;
-                }
-                default -> {}
-            }
+        switch (this.difficultyChange.ask()) {
+            case "EASY" ->
+                this.difficulty = Difficulty.EASY;
+            case "MEDIUM" ->
+                this.difficulty = Difficulty.MEDIUM;
+            case "HARD" ->
+                this.difficulty = Difficulty.HARD;
+            case "QUIT" ->
+                this.difficulty = null;
+            default -> {}
         }
-        System.out.println();
         return this.difficulty;
     }
 
-    public String askPlayAgain() {
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            System.out.println("PLAY AGAIN?");
-            System.out.println();
-            System.out.println("Y) YES");
-            System.out.println("N) NO");
-            System.out.println("D) CHANGE DIFFICULTY");
-            System.out.println();
-            System.out.print("> ");
-
-            switch (scanner.nextLine().toLowerCase().trim()) {
-                case "y", "yes" -> {
-                    return "YES";
-                }
-                case "n", "no", "quit" -> {
-                    return "NO";
-                }
-                case "d" -> {
-                    return "CHANGE_DIFFICULTY";
-                }
-                default -> {}
-            }
+    public boolean askPlayAgain() {
+        switch (this.playAgain.ask()) {
+            case "YES" -> { return true; }
+            case "NO", "QUIT" -> { return false; }
+            case "CHANGE_DIFFICULTY" -> { return this.selectDifficulty() != null; }
+            default -> { }
         }
+
+        return false;
     }
 }

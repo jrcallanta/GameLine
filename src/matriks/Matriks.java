@@ -17,7 +17,6 @@ public class Matriks extends Game {
 
     public Matriks() {
         super();
-        reset();
     }
 
     public void reset() {
@@ -34,7 +33,6 @@ public class Matriks extends Game {
                 this.matriks = new MatriksSquare(4);
                 this.difficulty = Difficulty.HARD;
             }
-
             default -> {
                 this.matriks = new MatriksSquare();
                 this.difficulty = Difficulty.EASY;
