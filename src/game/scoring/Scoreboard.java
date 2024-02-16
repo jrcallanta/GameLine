@@ -1,4 +1,4 @@
-package game;
+package game.scoring;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,37 +12,42 @@ public class Scoreboard {
 
     public Scoreboard () {
         this.scoreboard = new HashMap<>();
-        latest = null;
+        this.latest = null;
     }
 
     public List<Score> addScore (String gameName, Score score) {
-        List<Score> scores = scoreboard.getOrDefault(gameName, new ArrayList<>());
+        List<Score> scores = this.scoreboard.getOrDefault(gameName, new ArrayList<>());
         scores.add(score);
-        scoreboard.put(gameName, scores);
-        latest = score;
+        this.scoreboard.put(gameName, scores);
+        this.latest = score;
         return scores;
     }
-
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (String gameName : this.scoreboard.keySet()) {
             sb
-            .append(printPretty(gameName))
+            .append(pretty(gameName))
             .append("\n\n");
         }
         return sb.toString();
     }
 
-    public void print() {
+    public void printAll() {
         System.out.println(this);
     }
 
-    private String printPretty(String gameName) {
+    public void printByGame(String gameName) {
+        System.out.println(pretty(gameName));
+    }
+
+    private String pretty(String gameName) {
+        if (!this.scoreboard.containsKey(gameName)) return null;
+
         int width = Math.max(gameName.length(), MAX_WIDTH);
         StringBuilder sb = new StringBuilder();
-        List<Score> scores = scoreboard.get(gameName);
+        List<Score> scores = this.scoreboard.get(gameName);
 
         sb
         .append("\n")
@@ -70,7 +75,7 @@ public class Scoreboard {
                     s.substring(s.length()/2)
 
             ))
-            .append(scores.get(i) == latest ? "  <--\n" : "\n" );
+            .append(scores.get(i) == this.latest ? "  <--\n" : "\n" );
         }
         sb.append(String.format("|%" + width + "s|\n",""));
 

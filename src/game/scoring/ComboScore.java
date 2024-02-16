@@ -1,4 +1,6 @@
-package game;
+package game.scoring;
+
+import game.Difficulty;
 
 public class ComboScore extends Score {
     protected long timeInMilliseconds;
