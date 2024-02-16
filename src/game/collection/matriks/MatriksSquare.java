@@ -1,4 +1,4 @@
-package matriks;
+package game.collection.matriks;
 
 import java.util.Random;
 
