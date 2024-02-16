@@ -1,42 +1,40 @@
-package matriks;
+package game.collection.matriks;
 
-import game.*;
+import game.Game;
+import game.TimedGame;
+import game.scoring.Score;
+import game.scoring.TimeScore;
 
-import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Matriks extends Game {
+public class Matriks extends TimedGame {
     private MatriksSquare matriks;
     private int numOfFlips;
     private int numOfTurns;
-    private Date startTime;
-    private Date endTime;
 
     public Matriks() {
         super();
     }
 
+    @Override
     public void reset() {
+        super.reset();
+
         switch (this.difficulty) {
-            case EASY -> {
+            case EASY ->
                 this.matriks = new MatriksSquare(2);
-                this.difficulty = Difficulty.EASY;
-            }
-            case MEDIUM -> {
+
+            case MEDIUM ->
                 this.matriks = new MatriksSquare(3);
-                this.difficulty = Difficulty.MEDIUM;
-            }
-            case HARD -> {
+
+            case HARD ->
                 this.matriks = new MatriksSquare(4);
-                this.difficulty = Difficulty.HARD;
-            }
-            default -> {
-                this.matriks = new MatriksSquare();
-                this.difficulty = Difficulty.EASY;
-            }
+
+            default ->
+                throw new RuntimeException("NoDifficultySet");
         }
         this.numOfFlips = 0;
         this.numOfTurns = 0;
@@ -48,7 +46,7 @@ public class Matriks extends Game {
 
         this.matriks.print();
         this.matriks.printDetails();
-        this.startTime = new Date();
+        this.startTimer();
 
         System.out.print("FLIP: ");
         Scanner scanner = new Scanner(System.in);
@@ -113,12 +111,12 @@ public class Matriks extends Game {
                 continue;
             }
 
-            this.endTime = new Date();
+            this.stopTimer();
             System.out.println();
             this.printResults();
             return new TimeScore(
                     this.difficulty,
-                    this.endTime.getTime() - this.startTime.getTime()
+                    this.getElapsedTime()
             );
         }
     }
@@ -131,7 +129,7 @@ public class Matriks extends Game {
     private void printResults() {
         System.out.println("TARGET REACHED!");
         System.out.println("YOU WIN!");
-        int seconds = (int) TimeUnit.SECONDS.convert(this.endTime.getTime() - this.startTime.getTime(), TimeUnit.MILLISECONDS);
+        int seconds = (int) TimeUnit.SECONDS.convert(this.getElapsedTime(), TimeUnit.MILLISECONDS);
         System.out.println("TIME: " + seconds/60 + "m " + seconds%60 + "s");
         System.out.println("FLIPS: " + this.numOfFlips);
     }
@@ -179,6 +177,8 @@ public class Matriks extends Game {
                 System.out.println("  COL c1 c2 c3... ");
                 System.out.println();
             }
+
+            default -> {}
         }
     }
 }
