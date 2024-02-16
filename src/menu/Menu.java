@@ -97,7 +97,7 @@ public class Menu {
             String response = scanner.nextLine().trim();
             if (this.acceptedInput.containsKey(response)) {
                 response = this.acceptedInput.get(response);
-                String formatted = !this.borderChar.equals("")
+                String formatted = !this.borderChar.isEmpty()
                         ?"%" + this.width + "s\n"
                         :"%s\n";
 
@@ -106,14 +106,14 @@ public class Menu {
                 return this.acceptedInput.get(response);
             }
 
-            if (!this.invalidFeedback.equals("")) {
+            if (!this.invalidFeedback.isEmpty()) {
                 System.out.println(this.invalidFeedback);
             }
         }
     }
 
     private void printBorder() {
-        if (!this.borderChar.equals("")) {
+        if (!this.borderChar.isEmpty()) {
             System.out.println(String.format(this.borderChar).repeat(this.width));
         }
     }

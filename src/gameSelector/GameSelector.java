@@ -7,7 +7,7 @@ import menu.Menu;
 import java.util.Arrays;
 
 public class GameSelector {
-    private Menu menu;
+    final private Menu menu;
     public GameSelector() {
         // Configure Menu
         this.menu = new Menu();
