@@ -66,7 +66,7 @@ public class Matriks extends TimedGame {
             StringBuilder cmds = new StringBuilder();
             do cmds.append(cmdMat.group(1));
             while (cmdMat.find());
-            if (!cmd.equals(cmds.toString())) {
+            if (!cmd.contentEquals(cmds)) {
                 printInstructions(Game.InstructionDepth.SHORT);
                 cmd = scanner.nextLine();
                 cmdMat = cmdPat.matcher(cmd);
