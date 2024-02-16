@@ -1,4 +1,6 @@
-package game;
+package game.scoring;
+
+import game.Difficulty;
 
 public class Score implements Comparable<Score> {
 
