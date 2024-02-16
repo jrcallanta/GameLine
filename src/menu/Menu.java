@@ -1,6 +1,9 @@
 package menu;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Menu {
@@ -103,6 +106,7 @@ public class Menu {
 
                 System.out.printf(formatted, "SELECTED: " + response);
                 printBorder();
+
                 return this.acceptedInput.get(response);
             }
 
