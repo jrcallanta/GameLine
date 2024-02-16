@@ -12,14 +12,14 @@ public class Scoreboard {
 
     public Scoreboard () {
         this.scoreboard = new HashMap<>();
-        this.latest = null;
+        latest = null;
     }
 
     public List<Score> addScore (String gameName, Score score) {
         List<Score> scores = this.scoreboard.getOrDefault(gameName, new ArrayList<>());
         scores.add(score);
         this.scoreboard.put(gameName, scores);
-        this.latest = score;
+        latest = score;
         return scores;
     }
 
@@ -75,7 +75,7 @@ public class Scoreboard {
                     s.substring(s.length()/2)
 
             ))
-            .append(scores.get(i) == this.latest ? "  <--\n" : "\n" );
+            .append(scores.get(i) == latest ? "  <--\n" : "\n" );
         }
         sb.append(String.format("|%" + width + "s|\n",""));
 
