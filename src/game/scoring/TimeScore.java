@@ -1,4 +1,6 @@
-package game;
+package game.scoring;
+
+import game.Difficulty;
 
 import java.util.concurrent.TimeUnit;
 
@@ -8,7 +10,7 @@ public class TimeScore extends Score {
     }
     public String getTimeAsString() {
         int seconds = (int) TimeUnit.SECONDS.convert(this.getValue(), TimeUnit.MILLISECONDS);
-        return seconds / 60 + "m " + seconds % 60 + "s";
+        return String.format("%2dm %2ds", seconds / 60, seconds % 60);
     }
 
     @Override
