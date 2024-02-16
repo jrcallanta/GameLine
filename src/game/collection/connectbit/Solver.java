@@ -6,7 +6,7 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class Solver {
-    private Generator generator;
+    final private Generator generator;
     private List<Solution> solutions;
 
     public Solver(Generator generator) {
@@ -22,7 +22,7 @@ public class Solver {
     }
 
     private List<Solution> solve(List<String> current, List<String> remaining, List<Solution> foundSolutions) {
-        String spacing = String.format("%" + (4 * current.size()) + "s", "").replaceAll("    ", "-   ");
+        String spacing = String.format("%" + (4 * current.size()) + "s", "").replaceAll(" {4}", "-   ");
         //System.out.println(spacing + "r:" + remaining);
         //System.out.println(spacing + "c:" + current);
 
