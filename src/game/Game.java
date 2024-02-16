@@ -1,5 +1,6 @@
 package game;
 
+import game.scoring.Score;
 import menu.Menu;
 
 import java.util.Arrays;
@@ -27,9 +28,10 @@ public abstract class Game {
 
         this.playAgain = new Menu();
         this.playAgain.setPrompt("PLAY AGAIN?");
+        this.playAgain.setBorderChar("-");
         this.playAgain.addOption("YES", "Y", Arrays.asList("y", "yes"));
         this.playAgain.addOption("NO", "N", Arrays.asList("n", "no"));
-        this.playAgain.addOption("CHANGE_DIFFICULTY", "D", Arrays.asList("d"));
+        this.playAgain.addOption("CHANGE DIFFICULTY", "D", Arrays.asList("d"));
         this.playAgain.addSecretOption("QUIT", Arrays.asList("quit"));
     }
 
@@ -49,8 +51,8 @@ public abstract class Game {
             // do nothing
         }
     }
-    abstract public Score play();
     abstract public void reset();
+    abstract public Score play();
     abstract public String getGameName();
     abstract public void printInstructions(InstructionDepth depth);
 
@@ -79,7 +81,7 @@ public abstract class Game {
         switch (this.playAgain.ask()) {
             case "YES" -> { return true; }
             case "NO", "QUIT" -> { return false; }
-            case "CHANGE_DIFFICULTY" -> { return this.selectDifficulty() != null; }
+            case "CHANGE DIFFICULTY" -> { return this.selectDifficulty() != null; }
             default -> { }
         }
 
