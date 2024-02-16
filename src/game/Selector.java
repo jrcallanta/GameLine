@@ -1,22 +1,22 @@
-package gameSelector;
+package game;
 
-import game.Game;
-import matriks.Matriks;
+import game.collection.connectbit.ConnectBit;
+import game.collection.matriks.Matriks;
 import menu.Menu;
 
 import java.util.Arrays;
 
-public class GameSelector {
+public class Selector {
     final private Menu menu;
-    public GameSelector() {
+    public Selector() {
         // Configure Menu
         this.menu = new Menu();
         this.menu.setPrompt("CHOOSE A GAME:");
         this.menu.setBorderChar("-");
-        this.menu.setInvalidFeedback("***** Not valid selection. Try Again. *****");
 
         // Add All Game Options Menu
         this.menu.addOption("MATRIKS", "1");
+        this.menu.addOption("CONNECT BIT", "2");
 
         // Add secret QUIT option
         this.menu.addSecretOption("QUIT", Arrays.asList("quit", "q"));
@@ -27,6 +27,9 @@ public class GameSelector {
         switch(this.menu.ask()) {
             case "MATRIKS" -> {
                 return new Matriks();
+            }
+            case "CONNECT BIT" -> {
+                return new ConnectBit();
             }
             default -> {
                 return null;

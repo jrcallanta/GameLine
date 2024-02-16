@@ -1,13 +1,13 @@
 import game.Game;
-import game.Score;
-import game.Scoreboard;
-import gameSelector.GameSelector;
+import game.scoring.Score;
+import game.scoring.Scoreboard;
+import game.Selector;
 
 public class Main {
     public static void main(String[] args) {
         Scoreboard scoreboard = new Scoreboard();
-        GameSelector gameSelector = new GameSelector();
-        Game game = gameSelector.select();
+        Selector selector = new Selector();
+        Game game = selector.select();
 
         while (game != null) {
             game.selectDifficulty();
@@ -17,12 +17,12 @@ public class Main {
                 Score score = game.play();
 
                 if (score != null) scoreboard.addScore(game.getGameName(), score);
-                scoreboard.print();
+                scoreboard.printByGame(game.getGameName());
 
                 if (!game.askPlayAgain()) break;
             }
 
-            game = gameSelector.select();
+            game = selector.select();
         }
     }
 }
