@@ -85,4 +85,8 @@ public abstract class Game {
 
         return false;
     }
+    public Score quit() {
+        System.out.println(">> QUITTING");
+        return null;
+    }
 }

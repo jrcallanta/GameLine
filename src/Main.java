@@ -1,22 +1,28 @@
 import game.Game;
 import game.Score;
 import game.Scoreboard;
-import matriks.Matriks;
+import gameSelector.GameSelector;
 
 public class Main {
     public static void main(String[] args) {
         Scoreboard scoreboard = new Scoreboard();
-        Game someGame = new Matriks();
-        someGame.selectDifficulty();
+        GameSelector gameSelector = new GameSelector();
+        Game game = gameSelector.select();
 
-        while (someGame.getDifficulty() != null) {
-            someGame.reset();
-            Score score = someGame.play();
+        while (game != null) {
+            game.selectDifficulty();
 
-            if (score != null) scoreboard.addScore(someGame.getGameName(), score);
-            scoreboard.print();
+            while (game.getDifficulty() != null) {
+                game.reset();
+                Score score = game.play();
 
-            if (!someGame.askPlayAgain()) break;
+                if (score != null) scoreboard.addScore(game.getGameName(), score);
+                scoreboard.print();
+
+                if (!game.askPlayAgain()) break;
+            }
+
+            game = gameSelector.select();
         }
     }
 }

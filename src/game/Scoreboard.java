@@ -40,12 +40,13 @@ public class Scoreboard {
     }
 
     private String printPretty(String gameName) {
-        System.out.println();
         int width = Math.max(gameName.length(), MAX_WIDTH);
         StringBuilder sb = new StringBuilder();
         List<Score> scores = scoreboard.get(gameName);
 
         sb
+        .append("\n")
+        .append(String.format("|%" + width + "s|\n",""))
         .append(String.format("|%" + width/2 + "s%-" + width/2 + "s|\n",
                 gameName.substring(0,gameName.length()/2),
                 gameName.substring(gameName.length()/2)
@@ -71,7 +72,7 @@ public class Scoreboard {
             ))
             .append(scores.get(i) == latest ? "  <--\n" : "\n" );
         }
-        System.out.printf("|%" + width + "s|\n","");
+        sb.append(String.format("|%" + width + "s|\n",""));
 
         return sb.toString();
     }

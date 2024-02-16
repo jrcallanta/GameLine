@@ -94,7 +94,7 @@ public class Matriks extends Game {
                         this.numOfFlips++;
                     }
                     case 'q' -> {
-                        return null;
+                        return quit();
                     }
                     default -> {
                     }
