@@ -41,7 +41,6 @@ public class ConnectBit extends TimedGame {
         this.startTimer();
 
         List<Integer> answer;
-        boolean winner;
         while (true) {
             this.generator.printTargets();
             System.out.println();
@@ -65,20 +64,15 @@ public class ConnectBit extends TimedGame {
                 System.out.println("INCORRECT!\n");
             } else {
                 this.stopTimer();
-                winner = true;
                 break;
             }
         }
 
-        if (winner) {
-            this.printWinnerResults(answer, generator.getSolutionsAsIntegerLists());
-            return new TimeScore(
-                this.difficulty,
-                this.getElapsedTime()
-            );
-        }
-
-        return null;
+        this.printWinnerResults(answer, generator.getSolutionsAsIntegerLists());
+        return new TimeScore(
+            this.difficulty,
+            this.getElapsedTime()
+        );
     }
 
 
