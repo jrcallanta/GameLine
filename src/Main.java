@@ -1,28 +1,39 @@
 import game.Game;
 import game.scoring.Score;
 import game.scoring.Scoreboard;
-import game.Selector;
+import game.GameSelector;
+
+import java.io.IOException;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scoreboard scoreboard = new Scoreboard();
-        Selector selector = new Selector();
-        Game game = selector.select();
 
-        while (game != null) {
-            game.selectDifficulty();
+        Scanner scanner = new Scanner(System.in);
+        GameSelector gs = new GameSelector();
+        Game game = gs.selectUsingScanner(scanner);
 
-            while (game.getDifficulty() != null) {
-                game.reset();
-                Score score = game.play();
+        try {
+            while (game != null) {
+                game.selectDifficulty();
 
-                if (score != null) scoreboard.addScore(game.getGameName(), score);
-                scoreboard.printByGame(game.getGameName());
+                while (game.getDifficulty() != null) {
+                    game.reset();
+                    Score score = game.play();
 
-                if (!game.askPlayAgain()) break;
+                    if (score != null) scoreboard.addScore(game.getGameName(), score);
+                    scoreboard.printByGame(game.getGameName());
+
+                    if (!game.askPlayAgain()) break;
+                }
+
+                game = gs.selectUsingScanner(scanner);
             }
-
-            game = selector.select();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        scanner.close();
     }
 }
