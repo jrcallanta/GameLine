@@ -17,6 +17,7 @@ public class Menu {
     final private List<String> secretOptions;
     final private List<String> selectors;
     final private HashMap<String, String> acceptedInput;
+    final private HashMap<String, String> optionDescriptors;
 
     public Menu () {
         this.prompt = "";
@@ -26,25 +27,34 @@ public class Menu {
         this.secretOptions = new ArrayList<>();
         this.selectors = new ArrayList<>();
         this.acceptedInput = new HashMap<>();
+        this.optionDescriptors = new HashMap<>();
     }
-
-    public List<String> addOption(String newOption, String selector, List<String> alts) {
+    public List<String> addOption(String newOption, String selector, String descriptor, List<String> alts) {
         this.options.add(newOption);
         this.selectors.add(selector);
 
+        if (descriptor != null) this.optionDescriptors.put(newOption, descriptor);
+
         this.acceptedInput.put(newOption, newOption);
         this.acceptedInput.put(selector, newOption);
-
-        for(String alt : alts) {
+        for (String alt : alts) {
             acceptedInput.put(alt, newOption);
         }
 
         return this.options;
     }
 
-    public List<String> addOption(String newOption, String selector) {
-        return addOption(newOption, selector, List.of());
+    public List<String> addOption(String newOption, String selector, List<String> alts) {
+        return addOption(newOption, selector, null, alts);
     }
+
+    public List<String> addOption(String newOption, String selector, String descriptor) {
+        return addOption(newOption, selector, descriptor, List.of());
+    }
+    public List<String> addOption(String newOption, String selector) {
+        return addOption(newOption, selector, null, List.of());
+    }
+
 
     public List<String> addSecretOption(String newOption, List<String> alts) {
         this.secretOptions.add(newOption);
@@ -54,6 +64,10 @@ public class Menu {
         }
 
         return this.secretOptions;
+    }
+
+    public void addDescriptor (String option, String descriptor) {
+        this.optionDescriptors.put(option, descriptor);
     }
 
     public void setPrompt(String prompt) {
@@ -89,8 +103,24 @@ public class Menu {
 
         System.out.println(this.prompt);
         System.out.println();
+        int longest = this.options
+                .stream()
+                .mapToInt(o -> o.length())
+                .max().orElse(10);
+
         for (int i = 0; i < this.options.size(); i++){
-            System.out.println(this.selectors.get(i) + ") " + this.options.get(i));
+            String line = String.format(
+                    "%s) %-" + longest + "s ",
+                    this.selectors.get(i),
+                    this.options.get(i));
+
+            if (this.optionDescriptors.containsKey(this.options.get(i))) {
+                line += String.format(
+                        "%" + (this.width - line.length()) + "s",
+                        this.optionDescriptors.get(this.options.get(i))
+                );
+            }
+            System.out.println(line);
         }
         System.out.println();
         while (true) {
