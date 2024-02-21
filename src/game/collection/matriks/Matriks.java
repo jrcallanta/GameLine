@@ -1,7 +1,7 @@
 package game.collection.matriks;
 
 import game.Game;
-import game.TimedGame;
+import game.types.TimedGame;
 import game.scoring.Score;
 import game.scoring.TimeScore;
 

@@ -1,6 +1,6 @@
 package game.collection.connectbit;
 
-import game.TimedGame;
+import game.types.TimedGame;
 import game.scoring.Score;
 import game.scoring.TimeScore;
 

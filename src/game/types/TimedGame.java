@@ -1,5 +1,6 @@
-package game;
+package game.types;
 
+import game.Game;
 import game.scoring.Score;
 
 import java.util.Date;
