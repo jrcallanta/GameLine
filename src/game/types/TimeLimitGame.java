@@ -4,20 +4,21 @@ import game.Game;
 import game.util.ConsoleInput;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 abstract public class TimeLimitGame extends Game {
     private Date startTime;
     private long timeLimit;
-    private ConsoleInput consoleInput;
+    final private ConsoleInput consoleInput;
 
-    public TimeLimitGame (long timeLimitInMS) {
-        this.timeLimit = timeLimitInMS;
+    public TimeLimitGame () {
+        this.timeLimit = TimeUnit.MILLISECONDS.convert(15, TimeUnit.SECONDS);
         this.consoleInput = new ConsoleInput();
     }
 
     @Override
     public void reset() {
-
+        this.startTime = null;
     }
 
     public void startTimer() {
@@ -42,7 +43,7 @@ abstract public class TimeLimitGame extends Game {
         return timeLimit;
     }
 
-    public void setTimeLimit(long timeLimitInMS) {
-        this.timeLimit = timeLimitInMS;
+    public void setTimeLimit(int time, TimeUnit timeUnit) {
+        this.timeLimit = TimeUnit.MILLISECONDS.convert(time, timeUnit);
     }
 }
