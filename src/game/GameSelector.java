@@ -2,6 +2,7 @@ package game;
 
 import game.collection.connectbit.ConnectBit;
 import game.collection.matriks.Matriks;
+import game.collection.sansa.Sansa;
 import menu.Menu;
 
 import java.io.IOException;
@@ -39,6 +40,9 @@ public class GameSelector {
 
             case "CONNECT BIT" ->
                 game = new ConnectBit();
+
+            case "SANSA" ->
+                game = new Sansa();
 
             default -> { }
         }
