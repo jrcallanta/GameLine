@@ -13,18 +13,18 @@ public abstract class Game {
     protected Difficulty difficulty;
     protected Scanner scanner;
     final private Menu playAgain;
-    final private Menu difficultyChange;
+    final protected Menu changeDifficulty;
     public enum InstructionDepth { FULL, SHORT, TURN }
 
     public Game() {
         this.printInstructions();
 
-        this.difficultyChange = new Menu();
-        this.difficultyChange.setPrompt("CHOOSE DIFFICULTY");
-        this.difficultyChange.addOption("EASY", "E", Arrays.asList("e", "easy"));
-        this.difficultyChange.addOption("MEDIUM", "M", Arrays.asList("m", "medium"));
-        this.difficultyChange.addOption("HARD", "H", Arrays.asList("h", "hard"));
-        this.difficultyChange.addSecretOption("QUIT", List.of("quit"));
+        this.changeDifficulty = new Menu();
+        this.changeDifficulty.setPrompt("CHOOSE DIFFICULTY");
+        this.changeDifficulty.addOption("EASY", "E", Arrays.asList("e", "easy"));
+        this.changeDifficulty.addOption("MEDIUM", "M", Arrays.asList("m", "medium"));
+        this.changeDifficulty.addOption("HARD", "H", Arrays.asList("h", "hard"));
+        this.changeDifficulty.addSecretOption("QUIT", List.of("quit"));
 
         this.playAgain = new Menu();
         this.playAgain.setPrompt("PLAY AGAIN?");
@@ -65,7 +65,7 @@ public abstract class Game {
     public Difficulty selectDifficulty() throws IOException {
         if (this.scanner == null) throw new IOException("NoScannerProvided");
 
-        switch (this.difficultyChange.ask(this.scanner)) {
+        switch (this.changeDifficulty.ask(this.scanner)) {
             case "EASY" ->
                 this.difficulty = Difficulty.EASY;
             case "MEDIUM" ->
