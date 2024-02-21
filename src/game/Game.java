@@ -3,18 +3,18 @@ package game;
 import game.scoring.Score;
 import menu.Menu;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Game {
     protected Difficulty difficulty;
-
-    public enum InstructionDepth {
-        FULL, SHORT, TURN
-    }
+    protected Scanner scanner;
     final private Menu playAgain;
     final private Menu difficultyChange;
+    public enum InstructionDepth { FULL, SHORT, TURN }
 
     public Game() {
         this.printInstructions();
@@ -62,8 +62,10 @@ public abstract class Game {
     public Difficulty getDifficulty() {
         return this.difficulty;
     }
-    public Difficulty selectDifficulty() {
-        switch (this.difficultyChange.ask()) {
+    public Difficulty selectDifficulty() throws IOException {
+        if (this.scanner == null) throw new IOException("NoScannerProvided");
+
+        switch (this.difficultyChange.ask(this.scanner)) {
             case "EASY" ->
                 this.difficulty = Difficulty.EASY;
             case "MEDIUM" ->
@@ -77,8 +79,10 @@ public abstract class Game {
         return this.difficulty;
     }
 
-    public boolean askPlayAgain() {
-        switch (this.playAgain.ask()) {
+    public boolean askPlayAgain() throws IOException {
+        if (this.scanner == null) throw new IOException("NoScannerProvided");
+
+        switch (this.playAgain.ask(this.scanner)) {
             case "YES" -> { return true; }
             case "NO", "QUIT" -> { return false; }
             case "CHANGE DIFFICULTY" -> { return this.selectDifficulty() != null; }
@@ -90,5 +94,9 @@ public abstract class Game {
     public Score quit() {
         System.out.println(">> QUITTING");
         return null;
+    }
+
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
     }
 }

@@ -5,7 +5,6 @@ import game.TimedGame;
 import game.scoring.Score;
 import game.scoring.TimeScore;
 
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,9 +14,6 @@ public class Matriks extends TimedGame {
     private int numOfFlips;
     private int numOfTurns;
 
-    public Matriks() {
-        super();
-    }
 
     @Override
     public void reset() {
@@ -49,8 +45,7 @@ public class Matriks extends TimedGame {
         this.startTimer();
 
         System.out.print("FLIP: ");
-        Scanner scanner = new Scanner(System.in);
-        String cmd = scanner.nextLine();
+        String cmd = this.scanner.nextLine();
         Pattern cmdPat = Pattern.compile("(([R|C])([1-" + this.matriks.getMatrixSize() + "])+[ *]?|QUIT|Q)", Pattern.CASE_INSENSITIVE);
         Matcher cmdMat = cmdPat.matcher(cmd);
         while(true) {
@@ -58,7 +53,7 @@ public class Matriks extends TimedGame {
             while (!cmdMat.find()) {
                 System.out.println();
                 printInstructions(Game.InstructionDepth.SHORT);
-                cmd = scanner.nextLine();
+                cmd = this.scanner.nextLine();
                 cmdMat = cmdPat.matcher(cmd);
             }
 
@@ -68,7 +63,7 @@ public class Matriks extends TimedGame {
             while (cmdMat.find());
             if (!cmd.contentEquals(cmds)) {
                 printInstructions(Game.InstructionDepth.SHORT);
-                cmd = scanner.nextLine();
+                cmd = this.scanner.nextLine();
                 cmdMat = cmdPat.matcher(cmd);
                 continue;
             }
@@ -105,7 +100,7 @@ public class Matriks extends TimedGame {
 
             if (!matriks.targetReached()) {
                 System.out.print("FLIP: ");
-                cmd = scanner.nextLine();
+                cmd = this.scanner.nextLine();
                 cmdMat = cmdPat.matcher(cmd);
                 System.out.println("------------");
                 continue;

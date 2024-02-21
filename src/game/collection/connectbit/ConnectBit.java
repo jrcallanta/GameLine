@@ -12,7 +12,6 @@ public class ConnectBit extends TimedGame {
     final private Generator generator;
 
     public ConnectBit () {
-        super();
         this.generator = new Generator();
     }
 
@@ -35,7 +34,6 @@ public class ConnectBit extends TimedGame {
     }
     @Override
     public Score play() {
-        Scanner scanner = new Scanner(System.in);
         this.printInstructions(InstructionDepth.FULL);
         this.countDown();
         this.startTimer();
@@ -48,7 +46,7 @@ public class ConnectBit extends TimedGame {
             System.out.println();
 
             answer = new ArrayList<>();
-            String answerLine = scanner.nextLine();
+            String answerLine = this.scanner.nextLine();
             if (answerLine.equalsIgnoreCase("q") || answerLine.equalsIgnoreCase("quit")) {
                 return this.quit();
             }

@@ -84,8 +84,7 @@ public class Menu {
                 .collect(Collectors.toList());
     }
 
-    public String ask () {
-        Scanner scanner = new Scanner(System.in);
+    public String ask (Scanner scanner) {
         printBorder();
 
         System.out.println(this.prompt);
