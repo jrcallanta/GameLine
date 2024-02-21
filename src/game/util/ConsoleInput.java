@@ -10,15 +10,12 @@ public class ConsoleInput {
         public String call() throws IOException {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             String input;
-            do {
-                try {
-                    System.out.print("> ");
-                    while (!br.ready()) Thread.sleep(200);
-                    input = br.readLine();
-                } catch (InterruptedException e) {
-                    return null;
-                }
-            } while ("".equals(input));
+            try {
+                while (!br.ready()) Thread.sleep(50);
+                input = br.readLine();
+            } catch (InterruptedException e) {
+                return null;
+            }
             return input;
         }
     }
