@@ -43,8 +43,6 @@ public class Scoreboard {
     }
 
     private String pretty(String gameName) {
-        if (!this.scoreboard.containsKey(gameName)) return null;
-
         int width = Math.max(gameName.length(), MAX_WIDTH);
         StringBuilder sb = new StringBuilder();
         List<Score> scores = this.scoreboard.get(gameName);
@@ -63,9 +61,13 @@ public class Scoreboard {
 
 
         if (scores == null) {
+            String noScores = "No Scores";
             sb
-            .append(String.format("|%" + width/2 + "s%-" + width/2 + "s|\n", "No Scores"))
-            .append(String.format("|%" + width + "s|\n", ""));
+            .append(String.format("|%" + width/2 + "s%-" + width/2 + "s|\n",
+                    noScores.substring(0, noScores.length()/2),
+                    noScores.substring(noScores.length()/2)
+            ))
+            .append(lined);
             return sb.toString();
         }
 
