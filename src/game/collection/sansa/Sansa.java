@@ -80,6 +80,7 @@ public class Sansa extends TimeLimitGame {
             target = num1 ^ num2;
         } while(this.getRemainingTime() > 0);
 
+        System.out.println();
         System.out.println("TIMES UP!");
         System.out.println("SCORE: " + points);
         return new Score(this.difficulty, points);
