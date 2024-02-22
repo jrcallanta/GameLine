@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Scoreboard {
-    final int MAX_WIDTH = 58;
+    final int MAX_WIDTH = 48;
     static private Score latest;
     final private HashMap<String, List<Score>> scoreboard;
 
@@ -49,15 +49,18 @@ public class Scoreboard {
         StringBuilder sb = new StringBuilder();
         List<Score> scores = this.scoreboard.get(gameName);
 
+        String lined = String.format("*%" + width + "s*\n", "").replace(" ", "-");
         sb
         .append("\n")
-        .append(String.format("|%" + width + "s|\n",""))
+        .append(lined)
         .append(String.format("|%" + width/2 + "s%-" + width/2 + "s|\n",
                 gameName.substring(0,gameName.length()/2),
                 gameName.substring(gameName.length()/2)
 
         ))
-        .append(String.format("|%" + width + "s|\n", ""));
+        .append(lined);
+
+
 
         if (scores == null) {
             sb
@@ -77,7 +80,7 @@ public class Scoreboard {
             ))
             .append(scores.get(i) == latest ? "  <--\n" : "\n" );
         }
-        sb.append(String.format("|%" + width + "s|\n",""));
+        sb.append(lined);
 
         return sb.toString();
     }

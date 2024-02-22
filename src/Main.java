@@ -16,19 +16,26 @@ public class Main {
 
         try {
             while (game != null) {
+                game.printInstructions();
+                game.waitToContinue("Press ENTER to continue...");
                 game.selectDifficulty();
 
                 while (game.getDifficulty() != null) {
                     game.reset();
+                    game.waitToContinue("Press ENTER to start...");
                     Score score = game.play();
+                    System.out.println("\n\n");
 
                     if (score != null) scoreboard.addScore(game.getGameName(), score);
                     scoreboard.printByGame(game.getGameName());
+                    System.out.println("\n\n");
 
                     if (!game.askPlayAgain()) break;
+                    System.out.println("\n\n");
                 }
 
                 game = gs.selectUsingScanner(scanner);
+                System.out.println("\n\n\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -34,7 +34,6 @@ public class ConnectBit extends TimedGame {
     }
     @Override
     public Score play() {
-        this.printInstructions(InstructionDepth.FULL);
         this.countDown();
         this.startTimer();
 

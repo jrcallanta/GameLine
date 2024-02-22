@@ -17,10 +17,12 @@ public abstract class Game {
     public enum InstructionDepth { FULL, SHORT, TURN }
 
     public Game() {
-        this.printInstructions();
+        this.printBanner();
+        //this.printInstructions();
 
         this.changeDifficulty = new Menu();
         this.changeDifficulty.setPrompt("CHOOSE DIFFICULTY");
+        this.changeDifficulty.setBorderChar("-");
         this.changeDifficulty.addOption("EASY", "E", Arrays.asList("e", "easy"));
         this.changeDifficulty.addOption("MEDIUM", "M", Arrays.asList("m", "medium"));
         this.changeDifficulty.addOption("HARD", "H", Arrays.asList("h", "hard"));
@@ -56,6 +58,27 @@ public abstract class Game {
     abstract public String getGameName();
     abstract public void printInstructions(InstructionDepth depth);
 
+    public void printBanner() {
+        int width = 48;
+        String name = this.getGameName();
+        int space = ((width - name.length()) / 2) - 2;
+        System.out.format("\n\n%s%s%s\n\n",
+                "=".repeat(space),
+                "[ " + name + " ]",
+                "=".repeat(space)
+        );
+//        int width = 48;
+//        int whiteSpace = ((width / 2) - 1);
+//        String border = String.format("+%s+","-".repeat(width - 2));
+//        String name = this.getGameName();
+//        System.out.println(border);
+//        System.out.printf(
+//                "|%" + whiteSpace + "s%-" + whiteSpace + "s|\n",
+//                name.substring(0, name.length()/2),
+//                name.substring(name.length()/2)
+//        );
+//        System.out.println(border);
+    }
     public void printInstructions() {
         printInstructions(InstructionDepth.FULL);
     }
@@ -98,5 +121,12 @@ public abstract class Game {
 
     public void setScanner(Scanner scanner) {
         this.scanner = scanner;
+    }
+
+    public void waitToContinue(String prompt) throws IOException {
+        if (this.scanner == null) throw new IOException();
+
+        System.out.println(prompt);
+        this.scanner.nextLine();
     }
 }
