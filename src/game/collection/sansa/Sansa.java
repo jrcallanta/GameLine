@@ -70,7 +70,7 @@ public class Sansa extends TimeLimitGame {
 
                 lineScanner = new Scanner(line);
                 if (lineScanner.hasNext(Pattern.compile("quit|q", Pattern.CASE_INSENSITIVE)))
-                    return null;
+                    return this.quit();
 
             } while (!lineScanner.hasNextInt() || lineScanner.nextInt() != target);
 

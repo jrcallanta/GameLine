@@ -95,7 +95,7 @@ public class Matriks extends TimedGame {
                         this.numOfFlips++;
                     }
                     case 'q' -> {
-                        return quit();
+                        return this.quit();
                     }
                     default -> {
                     }

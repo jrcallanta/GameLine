@@ -115,7 +115,10 @@ public abstract class Game {
         return false;
     }
     public Score quit() {
-        System.out.println(">> QUITTING");
+        int width = 32;
+        System.out.println();
+        System.out.printf("%" + width + "s\n", "GAME QUIT");
+        System.out.println("-".repeat(width));
         return null;
     }
 
