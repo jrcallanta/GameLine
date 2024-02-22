@@ -13,6 +13,12 @@ public class ConnectBit extends TimedGame {
 
     public ConnectBit () {
         this.generator = new Generator();
+        this.changeDifficulty.addDescriptor(
+                "EASY", "[6 ints]");
+        this.changeDifficulty.addDescriptor(
+                "MEDIUM", "[8 ints]");
+        this.changeDifficulty.addDescriptor(
+                "HARD", "[10 ints]");
     }
 
     @Override

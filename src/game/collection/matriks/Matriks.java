@@ -14,6 +14,15 @@ public class Matriks extends TimedGame {
     private int numOfFlips;
     private int numOfTurns;
 
+    public Matriks () {
+        super();
+        this.changeDifficulty.addDescriptor(
+                "EASY", "[4 x 4]");
+        this.changeDifficulty.addDescriptor(
+                "MEDIUM", "[6 x 6]");
+        this.changeDifficulty.addDescriptor(
+                "HARD", "[8 x 8]");
+    }
 
     @Override
     public void reset() {
