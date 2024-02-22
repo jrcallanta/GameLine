@@ -35,7 +35,6 @@ public class Main {
                 }
 
                 game = gs.selectUsingScanner(scanner);
-                System.out.println("\n\n\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
