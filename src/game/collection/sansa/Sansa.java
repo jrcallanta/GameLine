@@ -127,12 +127,18 @@ public class Sansa extends TimeLimitGame {
         switch (depth) {
             case FULL -> {
                 System.out.println();
-                System.out.println("============================================");
+                System.out.println("=".repeat(width));
                 System.out.println(Formatter.limitTextToWidth(goal, width, 0, 2));
                 System.out.println();
                 System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));
                 System.out.println();
                 System.out.println(Formatter.limitTextToWidth(example, width, 2, 2));
+                System.out.println();
+                System.out.println("=".repeat(width));
+            }
+
+            case SHORT -> {
+                System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));
                 System.out.println();
             }
         }
