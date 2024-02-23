@@ -2,6 +2,7 @@ package game.collection.sansa;
 
 import game.scoring.Score;
 import game.types.TimeLimitGame;
+import game.util.Formatter;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -127,55 +128,13 @@ public class Sansa extends TimeLimitGame {
             case FULL -> {
                 System.out.println();
                 System.out.println("============================================");
-                System.out.println(limitTextToWidth(goal, width, 0, 2));
+                System.out.println(Formatter.limitTextToWidth(goal, width, 0, 2));
                 System.out.println();
-                System.out.println(limitTextToWidth(instruction, width, 0, 2));
+                System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));
                 System.out.println();
-                System.out.println(limitTextToWidth(example, width, 2, 2));
+                System.out.println(Formatter.limitTextToWidth(example, width, 2, 2));
                 System.out.println();
             }
         }
-    }
-
-    private String limitLineToWidth(String s, int width) {
-        StringBuilder sb = new StringBuilder();
-        int marker = 0;
-        int end = Math.min(marker + width, s.length());
-        while (marker < end && end <= s.length()) {
-            while (
-                    end < s.length()
-                    && s.charAt(end - 1) != ' '
-                    && marker < end - 1
-            ) end--;
-
-            sb
-            .append(s, marker, end)
-            .append("\n");
-
-            marker = end;
-            end = Math.min(marker + width, s.length());
-        }
-        return sb.toString();
-    }
-    private String limitTextToWidth(String s, int width, int firstIndent, int indent) {
-        StringBuilder sb = new StringBuilder();
-        List<String> groups = new ArrayList<>();
-        
-        Arrays
-        .stream(s.split("\n"))
-        .forEachOrdered(part -> {
-            groups.addAll(Arrays
-                    .asList(limitLineToWidth(part, width)
-                    .split("\n")
-            ));
-        });
-
-        for (int i = 0; i < groups.size(); i++) {
-            sb.append(" ".repeat(i == 0  ? firstIndent : indent))
-            .append(groups.get(i).trim())
-            .append("\n");
-        }
-
-        return sb.toString().stripTrailing();
     }
 }
