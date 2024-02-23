@@ -3,6 +3,7 @@ package game.collection.connectbit;
 import game.types.TimedGame;
 import game.scoring.Score;
 import game.scoring.TimeScore;
+import game.util.Formatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,50 +86,59 @@ public class ConnectBit extends TimedGame {
     }
 
     @Override
-    public void printInstructions(InstructionDepth depth) {
+    public void printInformation(InformationDepth depth) {
+        int width = 48;
+        String goal =
+        "[GOAL]: \n\n" +
+        "You are given a list of integers," +
+        " all of which are representable by 4 bits." +
+        " Arrange the integers such that any two" +
+        " consecutive integers only differ by 1 bit." +
+        " The first and last integers will always be" +
+        " in their correct location.";
+
+        String instruction =
+        "[INSTRUCTIONS]: \n\n" +
+        "To submit an answer, type in a space-separated" +
+        " list of integers in any order you think" +
+        " satisfies the conditions. Then press ENTER.";
+
+        String example =
+        "[EXAMPLE]:                             \n" +
+        "                                       \n" +
+        "Given the following list:              \n" +
+        "[3  4  7  6  5]                        \n" +
+        "3  -  -  -  5                          \n" +
+        "                                       \n" +
+        "The binary representations are         \n" +
+        "3 -> 0011   4 -> 0100   5 -> 0101      \n" +
+        "6 -> 0110   7 -> 0111                  \n" +
+        "                                       \n" +
+        "3 is one bit away from 7, 0011 -> 0111 \n" +
+        "7 is one bit away from 6, 0111 -> 0110 \n" +
+        "6 is one bit away from 4, 0110 -> 0100 \n" +
+        "4 is one bit away from 5, 0100 -> 0101 \n" +
+        "\n" +
+        "Therefore, the solution is [3 7 6 4 5]";
+
+
         switch (depth) {
             case FULL -> {
                 System.out.println();
-                System.out.println("==============================================");
-                System.out.println("[GOAL]: You are given a list of integers,");
-                System.out.println("  all of which are representable by 4 bits.");
-                System.out.println("  Arrange the integers such that any two");
-                System.out.println("  consecutive integers only differ by 1 bit.");
-                System.out.println("  The first and last integers will always be");
-                System.out.println("  in their correct location.");
+                System.out.println("=".repeat(width));
                 System.out.println();
-                System.out.println("[INSTRUCTIONS]: To submit an answer, simply");
-                System.out.println("  type in a space-separated list of integers");
-                System.out.println("  in any order you think satisfies");
-                System.out.println("  the conditions.");
+                System.out.println(Formatter.limitTextToWidth(goal, width, 0, 2));
                 System.out.println();
-                System.out.println("  ex:   Given the following list: ");
-                System.out.println("        [3  4  7  6  5]");
-                System.out.println("        3  -  -  -  5");
+                System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));
                 System.out.println();
-                System.out.println("        The binary representations are");
-                System.out.println("        3 -> 0011   4 -> 0100   5 -> 0101");
-                System.out.println("        6 -> 0110   7 -> 0111");
+                System.out.println(Formatter.limitTextToWidth(example, width, 0, 2));
                 System.out.println();
-                System.out.println("        3 is one bit away from 7, 0011 -> 0111");
-                System.out.println("        7 is one bit away from 6, 0111 -> 0110");
-                System.out.println("        6 is one bit away from 4, 0110 -> 0100");
-                System.out.println("        4 is one bit away from 5, 0100 -> 0101");
-                System.out.println();
-                System.out.println("        Therefore, the solution is [3 7 6 4 5]");
-                System.out.println();
-                System.out.println("==============================================");
+                System.out.println("=".repeat(width));
                 System.out.println();
             }
 
             case SHORT -> {
-                System.out.println("[GOAL]: Arrange the integers such that any two");
-                System.out.println("  consecutive integers only differ by 1 bit.");
-                System.out.println("  The first and last integers will always be");
-                System.out.println("  in their correct location.");
-                System.out.println("[INSTRUCTIONS]: Type in a space-separated");
-                System.out.println("  list of integers in any order you think");
-                System.out.println("  satisfies the conditions.");
+                System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));
                 System.out.println();
             }
 

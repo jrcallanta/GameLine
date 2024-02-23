@@ -1,9 +1,9 @@
 package game.collection.matriks;
 
-import game.Game;
 import game.types.TimedGame;
 import game.scoring.Score;
 import game.scoring.TimeScore;
+import game.util.Formatter;
 
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -60,7 +60,7 @@ public class Matriks extends TimedGame {
             // Find if Valid Cmd Exists
             while (!cmdMat.find()) {
                 System.out.println();
-                printInstructions(Game.InstructionDepth.SHORT);
+                printInformation(InformationDepth.SHORT);
                 cmd = this.scanner.nextLine();
                 cmdMat = cmdPat.matcher(cmd);
             }
@@ -70,7 +70,7 @@ public class Matriks extends TimedGame {
             do cmds.append(cmdMat.group(1));
             while (cmdMat.find());
             if (!cmd.contentEquals(cmds)) {
-                printInstructions(Game.InstructionDepth.SHORT);
+                printInformation(InformationDepth.SHORT);
                 cmd = this.scanner.nextLine();
                 cmdMat = cmdPat.matcher(cmd);
                 continue;
@@ -138,46 +138,54 @@ public class Matriks extends TimedGame {
     }
 
     @Override
-    public void printInstructions(Game.InstructionDepth depth) {
+    public void printInformation(InformationDepth depth) {
+        int width = 48;
+        String goal =
+        "[GOAL]:\n\n" +
+        "The matrix board has 2N * 2N elements." +
+        " A corner sum is calculated by adding all the" +
+        " elements in the first N rows and N columns." +
+        " This can also be visualized as the top left" +
+        " NxN corner of the matrix board. The goal is" +
+        " to manipulate the matrix's rows and columns" +
+        " to reach the max possible corner sum. This" +
+        " target sum is shown on each turn.";
+
+        String instruction =
+        "[INSTRUCTIONS]:\n\n" +
+        "The player can flip any row or column" +
+        " any number of times.\n" +
+        "                                       \n" +
+        "To flip ROWs, type 'r' followed by the" +
+        " ROW number(s).\n" +
+        "To flip COLUMNs, type 'c' followed by the" +
+        " COLUMN number(s).";
+
+        String example =
+        "[EXAMPLE]:\n\n" +
+        "r123      ->  flip rows 1, 2, and 3\n" +
+        "c24       ->  flip cols 2 and 4\n" +
+        "r2c34r2   ->  flip row 2 then\n" +
+        "              flip col 3 and 4 then\n" +
+        "              flip row 2";
+
         switch (depth) {
             case FULL -> {
                 System.out.println();
-                System.out.println("============================================");
-                System.out.println("[GOAL]: The matrix board has 2N * 2N elements.");
-                System.out.println("  A corner sum is calculated by adding all the");
-                System.out.println("  elements in the first N rows and N columns.");
-                System.out.println("  This can also be visualized as the top left");
-                System.out.println("  N x N corner of the matrix board. The goal is");
-                System.out.println("  to manipulate the matrix's rows and columns");
-                System.out.println("  to reach the max possible corner sum. This");
-                System.out.println("  target sum is shown on each turn.");
+                System.out.println("=".repeat(width));
                 System.out.println();
-                System.out.println("[INSTRUCTIONS]: The player can flip any");
-                System.out.println("  row or column any number of times.");
+                System.out.println(Formatter.limitTextToWidth(goal, width, 0, 2));
                 System.out.println();
-                System.out.println("  To flip ROWs, type 'r' followed by the");
-                System.out.println("  row number(s).");
-                System.out.println("  To flip COLs, type 'c' followed by the");
-                System.out.println("  column number(s).");
+                System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));
                 System.out.println();
-                System.out.println("  ex.   r123      ->  flip rows 1, 2, and 3");
-                System.out.println("        c24       ->  flip cols 2 and 4");
-                System.out.println("        r2c34r2   ->  flip row 2 then");
-                System.out.println("                      flip col 3 and 4 then");
-                System.out.println("                      flip row 2");
+                System.out.println(Formatter.limitTextToWidth(example, width, 0, 2));
                 System.out.println();
-                System.out.println("============================================");
+                System.out.println("=".repeat(width));
                 System.out.println();
             }
 
             case SHORT -> {
-                System.out.println("[INSTRUCTIONS]: The player can flip any");
-                System.out.println("  row or column any number of times. A flip");
-                System.out.println("  is entered in the following format: ");
-                System.out.println();
-                System.out.println("  ROW r1 r2 r3... ");
-                System.out.println("  or ");
-                System.out.println("  COL c1 c2 c3... ");
+                System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));
                 System.out.println();
             }
 

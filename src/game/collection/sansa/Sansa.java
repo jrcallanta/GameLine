@@ -95,7 +95,7 @@ public class Sansa extends TimeLimitGame {
     }
 
     @Override
-    public void printInstructions(InstructionDepth depth) {
+    public void printInformation(InformationDepth depth) {
         int width = 48;
         String goal =
                 "[GOAL]: Given two integers, A and B, the XOR operator" +
@@ -128,6 +128,7 @@ public class Sansa extends TimeLimitGame {
             case FULL -> {
                 System.out.println();
                 System.out.println("=".repeat(width));
+                System.out.println();
                 System.out.println(Formatter.limitTextToWidth(goal, width, 0, 2));
                 System.out.println();
                 System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));

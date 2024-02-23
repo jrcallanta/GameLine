@@ -42,22 +42,27 @@ public class Formatter {
         }
         return sb.toString();
     }
+
+    public static String limitTextToWidth(String s, int width) {
+        return limitTextToWidth(s, width, 0, 0);
+    }
+
     public static String limitTextToWidth(String s, int width, int firstIndent, int indent) {
         StringBuilder sb = new StringBuilder();
         List<String> groups = new ArrayList<>();
 
-        Arrays
-                .stream(s.split("\n"))
-                .forEachOrdered(part -> {
-                    groups.addAll(Arrays
-                            .asList(limitLineToWidth(part, width)
-                                    .split("\n")
-                            ));
-                });
+        for (String part : s.split("\n")) {
+            groups.addAll(Arrays
+                    .asList(limitLineToWidth(part.stripTrailing(), width - Math.max(firstIndent, indent))
+                            .split("\n")
+                    )
+            );
+        }
 
         for (int i = 0; i < groups.size(); i++) {
-            sb.append(" ".repeat(i == 0  ? firstIndent : indent))
-                    .append(groups.get(i).trim())
+            sb
+                    .append(" ".repeat(i == 0  ? firstIndent : indent))
+                    .append(groups.get(i).stripTrailing())
                     .append("\n");
         }
 
