@@ -142,7 +142,7 @@ public class Matriks extends TimedGame {
         int width = 48;
         String goal =
         "[GOAL]:\n\n" +
-        "The matrix board has 2N * 2N elements." +
+        "The matrix board has 2Nx2N elements." +
         " A corner sum is calculated by adding all the" +
         " elements in the first N rows and N columns." +
         " This can also be visualized as the top left" +
