@@ -14,11 +14,11 @@ public abstract class Game {
     protected Scanner scanner;
     final private Menu playAgain;
     final protected Menu changeDifficulty;
-    public enum InstructionDepth { FULL, SHORT, TURN }
+    public enum InformationDepth { FULL, SHORT, TURN }
 
     public Game() {
         this.printBanner();
-        //this.printInstructions();
+        this.printInformation();
 
         this.changeDifficulty = new Menu();
         this.changeDifficulty.setPrompt("CHOOSE DIFFICULTY");
@@ -56,31 +56,22 @@ public abstract class Game {
     abstract public void reset();
     abstract public Score play();
     abstract public String getGameName();
-    abstract public void printInstructions(InstructionDepth depth);
+    abstract public void printInformation(InformationDepth depth);
 
     public void printBanner() {
         int width = 48;
         String name = this.getGameName();
-        int space = ((width - name.length()) / 2) - 2;
-        System.out.format("\n\n%s%s%s\n\n",
+        int space = (width - (name.length() + 4)) / 2;
+        String banner = String.format("%s%s%s",
                 "=".repeat(space),
                 "[ " + name + " ]",
                 "=".repeat(space)
         );
-//        int width = 48;
-//        int whiteSpace = ((width / 2) - 1);
-//        String border = String.format("+%s+","-".repeat(width - 2));
-//        String name = this.getGameName();
-//        System.out.println(border);
-//        System.out.printf(
-//                "|%" + whiteSpace + "s%-" + whiteSpace + "s|\n",
-//                name.substring(0, name.length()/2),
-//                name.substring(name.length()/2)
-//        );
-//        System.out.println(border);
+        if (width - banner.length() == 1) banner += "=";
+        System.out.printf("\n\n%s\n\n",banner);
     }
-    public void printInstructions() {
-        printInstructions(InstructionDepth.FULL);
+    public void printInformation() {
+        printInformation(InformationDepth.FULL);
     }
     public Difficulty getDifficulty() {
         return this.difficulty;
