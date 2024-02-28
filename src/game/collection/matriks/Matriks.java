@@ -1,9 +1,9 @@
 package game.collection.matriks;
 
-import game.types.TimedGame;
+import game.GameInformation;
 import game.scoring.Score;
 import game.scoring.TimeScore;
-import game.util.Formatter;
+import game.types.TimedGame;
 
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -16,12 +16,41 @@ public class Matriks extends TimedGame {
 
     public Matriks () {
         super();
+
         this.changeDifficulty.addDescriptor(
                 "EASY", "[4 x 4]");
         this.changeDifficulty.addDescriptor(
                 "MEDIUM", "[6 x 6]");
         this.changeDifficulty.addDescriptor(
                 "HARD", "[8 x 8]");
+
+        this.gameInformation = new GameInformation(
+                "[GOAL]:\n\n" +
+                        "The matrix board has 2Nx2N elements." +
+                        " A corner sum is calculated by adding all the" +
+                        " elements in the first N rows and N columns." +
+                        " This can also be visualized as the top left" +
+                        " NxN corner of the matrix board. The goal is" +
+                        " to manipulate the matrix's rows and columns" +
+                        " to reach the max possible corner sum. This" +
+                        " target sum is shown on each turn.",
+
+                "[INSTRUCTIONS]:\n\n" +
+                        "The player can flip any row or column" +
+                        " any number of times.\n" +
+                        "                                       \n" +
+                        "To flip ROWs, type 'r' followed by the" +
+                        " ROW number(s).\n" +
+                        "To flip COLUMNs, type 'c' followed by the" +
+                        " COLUMN number(s).",
+
+                "[EXAMPLE]:\n\n" +
+                        "r123      ->  flip rows 1, 2, and 3\n" +
+                        "c24       ->  flip cols 2 and 4\n" +
+                        "r2c34r2   ->  flip row 2 then\n" +
+                        "              flip col 3 and 4 then\n" +
+                        "              flip row 2"
+        );
     }
 
     @Override
@@ -44,6 +73,7 @@ public class Matriks extends TimedGame {
         this.numOfFlips = 0;
         this.numOfTurns = 0;
     }
+
     @Override
     public Score play() {
         this.countDown();
@@ -135,61 +165,5 @@ public class Matriks extends TimedGame {
         int seconds = (int) TimeUnit.SECONDS.convert(this.getElapsedTime(), TimeUnit.MILLISECONDS);
         System.out.println("TIME: " + seconds/60 + "m " + seconds%60 + "s");
         System.out.println("FLIPS: " + this.numOfFlips);
-    }
-
-    @Override
-    public void printInformation(InformationDepth depth) {
-        int width = 48;
-        String goal =
-        "[GOAL]:\n\n" +
-        "The matrix board has 2Nx2N elements." +
-        " A corner sum is calculated by adding all the" +
-        " elements in the first N rows and N columns." +
-        " This can also be visualized as the top left" +
-        " NxN corner of the matrix board. The goal is" +
-        " to manipulate the matrix's rows and columns" +
-        " to reach the max possible corner sum. This" +
-        " target sum is shown on each turn.";
-
-        String instruction =
-        "[INSTRUCTIONS]:\n\n" +
-        "The player can flip any row or column" +
-        " any number of times.\n" +
-        "                                       \n" +
-        "To flip ROWs, type 'r' followed by the" +
-        " ROW number(s).\n" +
-        "To flip COLUMNs, type 'c' followed by the" +
-        " COLUMN number(s).";
-
-        String example =
-        "[EXAMPLE]:\n\n" +
-        "r123      ->  flip rows 1, 2, and 3\n" +
-        "c24       ->  flip cols 2 and 4\n" +
-        "r2c34r2   ->  flip row 2 then\n" +
-        "              flip col 3 and 4 then\n" +
-        "              flip row 2";
-
-        switch (depth) {
-            case FULL -> {
-                System.out.println();
-                System.out.println("=".repeat(width));
-                System.out.println();
-                System.out.println(Formatter.limitTextToWidth(goal, width, 0, 2));
-                System.out.println();
-                System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));
-                System.out.println();
-                System.out.println(Formatter.limitTextToWidth(example, width, 0, 2));
-                System.out.println();
-                System.out.println("=".repeat(width));
-                System.out.println();
-            }
-
-            case SHORT -> {
-                System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));
-                System.out.println();
-            }
-
-            default -> {}
-        }
     }
 }

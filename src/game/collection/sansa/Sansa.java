@@ -1,10 +1,11 @@
 package game.collection.sansa;
 
+import game.GameInformation;
 import game.scoring.Score;
 import game.types.TimeLimitGame;
-import game.util.Formatter;
 
-import java.util.*;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -23,6 +24,32 @@ public class Sansa extends TimeLimitGame {
                 "MEDIUM", "[4 bits 60 seconds]");
         this.changeDifficulty.addDescriptor(
                 "HARD", "[8 bits 90 seconds]");
+
+        this.gameInformation = new GameInformation(
+                "[GOAL]: Given two integers, A and B, the XOR operator" +
+                        " uses the exclusive OR operation on each bit pair, A_n and B_n," +
+                        " to calculate bit C_n, where n is the bit in the nth place." +
+                        " The resulting bits make up the new integer C. The goal is to" +
+                        " calculate this result C. After each correct answer, a new" +
+                        " expression will spawn using the previous answer. Solve as" +
+                        " many expressions within the time provided.",
+
+                "[INSTRUCTION]: Type your guess in the console and" +
+                        " press ENTER to submit. Any input other than an integer will be" +
+                        " rejected. Only the correct answer will spawn the next" +
+                        " expression.",
+
+                "ex.                                \n" +
+                        "                                   \n" +
+                        "Given the following expression:    \n" +
+                        "3 xor 7                            \n" +
+                        "                                   \n" +
+                        "The binary representations are     \n" +
+                        "3 -> 0011   7 -> 0111              \n" +
+                        "                                   \n" +
+                        "The result would be 0100, which    \n" +
+                        "would be 4.                        \n"
+        );
     }
 
     @Override
@@ -89,59 +116,9 @@ public class Sansa extends TimeLimitGame {
     private int getNextNum() {
         return this.random.nextInt((int) Math.pow(2, this.bitCount));
     }
+
     @Override
     public String getGameName() {
         return "SANSA";
-    }
-
-    @Override
-    public void printInformation(InformationDepth depth) {
-        int width = 48;
-        String goal =
-                "[GOAL]: Given two integers, A and B, the XOR operator" +
-                " uses the exclusive OR operation on each bit pair, A_n and B_n," +
-                " to calculate bit C_n, where n is the bit in the nth place." +
-                " The resulting bits make up the new integer C. The goal is to" +
-                " calculate this result C. After each correct answer, a new" +
-                " expression will spawn using the previous answer. Solve as" +
-                " many expressions within the time provided.";
-
-        String instruction =
-                "[INSTRUCTION]: Type your guess in the console and" +
-                " press ENTER to submit. Any input other than an integer will be" +
-                " rejected. Only the correct answer will spawn the next" +
-                " expression.";
-
-        String example =
-                "ex.                                \n" +
-                "                                   \n" +
-                "Given the following expression:    \n" +
-                "3 xor 7                            \n" +
-                "                                   \n" +
-                "The binary representations are     \n" +
-                "3 -> 0011   7 -> 0111              \n" +
-                "                                   \n" +
-                "The result would be 0100, which    \n" +
-                "would be 4.                        \n";
-
-        switch (depth) {
-            case FULL -> {
-                System.out.println();
-                System.out.println("=".repeat(width));
-                System.out.println();
-                System.out.println(Formatter.limitTextToWidth(goal, width, 0, 2));
-                System.out.println();
-                System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));
-                System.out.println();
-                System.out.println(Formatter.limitTextToWidth(example, width, 2, 2));
-                System.out.println();
-                System.out.println("=".repeat(width));
-            }
-
-            case SHORT -> {
-                System.out.println(Formatter.limitTextToWidth(instruction, width, 0, 2));
-                System.out.println();
-            }
-        }
     }
 }

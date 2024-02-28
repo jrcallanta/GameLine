@@ -1,6 +1,7 @@
 package game;
 
 import game.scoring.Score;
+import game.util.Formatter;
 import menu.Menu;
 
 import java.io.IOException;
@@ -14,12 +15,14 @@ public abstract class Game {
     protected Scanner scanner;
     final private Menu playAgain;
     final protected Menu changeDifficulty;
+    protected GameInformation gameInformation;
     public enum InformationDepth { FULL, SHORT, TURN }
 
-    public Game() {
-        this.printBanner();
-        this.printInformation();
+    abstract public void reset();
+    abstract public Score play();
+    abstract public String getGameName();
 
+    public Game() {
         this.changeDifficulty = new Menu();
         this.changeDifficulty.setPrompt("CHOOSE DIFFICULTY");
         this.changeDifficulty.setBorderChar("-");
@@ -53,10 +56,6 @@ public abstract class Game {
             // do nothing
         }
     }
-    abstract public void reset();
-    abstract public Score play();
-    abstract public String getGameName();
-    abstract public void printInformation(InformationDepth depth);
 
     public void printBanner() {
         int width = 48;
@@ -67,15 +66,47 @@ public abstract class Game {
                 "[ " + name + " ]",
                 "=".repeat(space)
         );
+
         if (width - banner.length() == 1) banner += "=";
-        System.out.printf("\n\n%s\n\n",banner);
+        System.out.printf("\n\n%s\n\n", banner);
     }
+
     public void printInformation() {
         printInformation(InformationDepth.FULL);
     }
+
+    public void printInformation(InformationDepth depth) {
+        int width = 48;
+
+        switch (depth) {
+            case FULL -> {
+                this.printBanner();
+                System.out.println();
+                System.out.println("=".repeat(width));
+                System.out.println();
+                System.out.println(Formatter.limitTextToWidth(this.gameInformation.getGoal(), width, 0, 2));
+                System.out.println();
+                System.out.println(Formatter.limitTextToWidth(this.gameInformation.getInstruction(), width, 0, 2));
+                System.out.println();
+                System.out.println(Formatter.limitTextToWidth(this.gameInformation.getExample(), width, 0, 2));
+                System.out.println();
+                System.out.println("=".repeat(width));
+                System.out.println();
+            }
+
+            case SHORT -> {
+                System.out.println(Formatter.limitTextToWidth(this.gameInformation.getInstruction(), width, 0, 2));
+                System.out.println();
+            }
+
+            default -> {}
+        }
+    }
+
     public Difficulty getDifficulty() {
         return this.difficulty;
     }
+
     public Difficulty selectDifficulty() throws IOException {
         if (this.scanner == null) throw new IOException("NoScannerProvided");
 
@@ -105,6 +136,7 @@ public abstract class Game {
 
         return false;
     }
+
     public Score quit() {
         int width = 32;
         System.out.println();
