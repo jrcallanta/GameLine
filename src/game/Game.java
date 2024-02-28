@@ -16,7 +16,7 @@ public abstract class Game {
     final private Menu playAgain;
     final protected Menu changeDifficulty;
     protected GameInformation gameInformation;
-    public enum InformationDepth { FULL, SHORT, TURN }
+    public enum InformationDepth { FULL, SHORT }
 
     abstract public void reset();
     abstract public Score play();
