@@ -39,10 +39,11 @@ public class Sansa extends TimeLimitGame {
                         " rejected. Only the correct answer will spawn the next" +
                         " expression.",
 
-                "ex.                                \n" +
+                "[EXAMPLE]:                         \n" +
                         "                                   \n" +
                         "Given the following expression:    \n" +
                         "3 xor 7                            \n" +
+                        "  = ?                              \n" +
                         "                                   \n" +
                         "The binary representations are     \n" +
                         "3 -> 0011   7 -> 0111              \n" +

@@ -36,20 +36,31 @@ public class Matriks extends TimedGame {
                         " target sum is shown on each turn.",
 
                 "[INSTRUCTIONS]:\n\n" +
-                        "The player can flip any row or column" +
-                        " any number of times.\n" +
-                        "                                       \n" +
-                        "To flip ROWs, type 'r' followed by the" +
-                        " ROW number(s).\n" +
-                        "To flip COLUMNs, type 'c' followed by the" +
-                        " COLUMN number(s).",
+                        "Type in a sequence of commands to flip" +
+                        " any row or column any number of times." +
+                        " Type 'r' followed by the ROW number(s)" +
+                        " to flip ROWs. Type 'c' followed by the" +
+                        " COLUMN number(s) to flip COLs.            \n" +
+                        "                                           \n" +
+                        "r123      ->  flip rows 1, 2, and 3        \n" +
+                        "c24       ->  flip cols 2 and 4            \n" +
+                        "r2c34r2   ->  flip row 2 then              \n" +
+                        "              flip col 3 and 4 then        \n" +
+                        "              flip row 2",
 
                 "[EXAMPLE]:\n\n" +
-                        "r123      ->  flip rows 1, 2, and 3\n" +
-                        "c24       ->  flip cols 2 and 4\n" +
-                        "r2c34r2   ->  flip row 2 then\n" +
-                        "              flip col 3 and 4 then\n" +
-                        "              flip row 2"
+                        "Given the following matrix and target sum: \n" +
+                        "[                                          \n" +
+                        "    1 3                                    \n" +
+                        "    4 7                                    \n" +
+                        "]                                          \n" +
+                        "TARGET: 7                                  \n" +
+                        "                                           \n" +
+                        "The target sum would put 7 in the top left" +
+                        " corner. To do so, flip col 2 then row 1 with" +
+                        " the command 'c2r1. The command 'r2c1' would also" +
+                        " generate the target sum."
+
         );
     }
 
