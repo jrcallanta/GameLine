@@ -16,7 +16,7 @@ public class Main {
 
         try {
             while (game != null) {
-                //game.printInstructions();
+                game.printInformation();
                 game.waitToContinue("Press ENTER to continue...");
                 game.selectDifficulty();
 
