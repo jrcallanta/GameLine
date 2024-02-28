@@ -81,9 +81,6 @@ public abstract class Game {
         switch (depth) {
             case FULL -> {
                 this.printBanner();
-                System.out.println();
-                System.out.println("=".repeat(width));
-                System.out.println();
                 System.out.println(Formatter.limitTextToWidth(this.gameInformation.getGoal(), width, 0, 2));
                 System.out.println();
                 System.out.println(Formatter.limitTextToWidth(this.gameInformation.getInstruction(), width, 0, 2));
