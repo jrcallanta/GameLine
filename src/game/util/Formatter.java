@@ -19,7 +19,7 @@ public class Formatter {
     }
 
     public void print(String s) {
-        System.out.println(this.limitTextToWidth(s, this.maxWidth, 0, 0));
+        System.out.println(limitTextToWidth(s, this.maxWidth, 0, 0));
     }
 
     public static String limitLineToWidth(String s, int width) {
