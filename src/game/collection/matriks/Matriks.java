@@ -5,14 +5,21 @@ import game.scoring.Score;
 import game.scoring.TimeScore;
 import game.types.TimedGame;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Matriks extends TimedGame {
     private MatriksSquare matriks;
     private int numOfFlips;
     private int numOfTurns;
+
+    private Pattern validPat;
+    private Pattern flipPat;
+    private List<String> quitStrings;
 
     public Matriks () {
         super();
@@ -26,14 +33,14 @@ public class Matriks extends TimedGame {
 
         this.gameInformation = new GameInformation(
                 "[GOAL]:\n\n" +
-                        "The matrix board has 2Nx2N elements." +
-                        " A corner sum is calculated by adding all the" +
-                        " elements in the first N rows and N columns." +
-                        " This can also be visualized as the top left" +
-                        " NxN corner of the matrix board. The goal is" +
-                        " to manipulate the matrix's rows and columns" +
-                        " to reach the max possible corner sum. This" +
-                        " target sum is shown on each turn.",
+                        "The matrix board has 2Nx2N elements," +
+                        " consisting of the characters A B C and D." +
+                        " Each character appears N*N times, allowing" +
+                        " for a perfect square with each quadrant" +
+                        " having a designated character. Manipulate" +
+                        " the rows and columns so that each quadrant" +
+                        " contains only its respective character. You" +
+                        " decide which characters go in which quadrant.",
 
                 "[INSTRUCTIONS]:\n\n" +
                         "Type in a sequence of commands to flip" +
@@ -49,18 +56,28 @@ public class Matriks extends TimedGame {
                         "              flip row 2",
 
                 "[EXAMPLE]:\n\n" +
-                        "Given the following matrix and target sum: \n" +
+                        "Given the following matrix:                \n" +
                         "[                                          \n" +
-                        "    1 3                                    \n" +
-                        "    4 7                                    \n" +
+                        "    A A C B                                \n" +
+                        "    A A C B                                \n" +
+                        "    C B D D                                \n" +
+                        "    D D B C                                \n" +
                         "]                                          \n" +
-                        "TARGET: 7                                  \n" +
                         "                                           \n" +
-                        "The target sum would put 7 in the top left" +
-                        " corner. To do so, flip col 2 then row 1 with" +
-                        " the command 'c2r1. The command 'r2c1' would also" +
-                        " generate the target sum."
+                        "The matrix can be solved in two flips. First," +
+                        " flip the third row (r3), putting the" +
+                        " Ds in the bottom left quadrant. Then flip" +
+                        " either the third column (c3) or fourth" +
+                        " column (c4), to put the Cs and Bs in their" +
+                        " respective quadrants. This entire sequence" +
+                        " can also be accomplished with one command" +
+                        " (r3c3 or r3c4)."
+        );
 
+        // Quit Strings
+        this.quitStrings = List.of(
+                "quit"
+                //"q"
         );
     }
 
@@ -83,79 +100,73 @@ public class Matriks extends TimedGame {
         }
         this.numOfFlips = 0;
         this.numOfTurns = 0;
+
+        // Regex Strings
+        List<String> validStr = List.of(
+                "^(?: *[r|c][1-%d]+)+$".formatted(this.matriks.getMatrixSize()),
+                "(?:(?:^\\s*(%s)\\s*$))".formatted(this.quitStrings.stream().collect(Collectors.joining("|")))
+        );
+        String flipStr = "([r|c])([1-6]+)";
+
+        // Generate Regex Patterns
+        this.validPat = Pattern.compile(
+                validStr.stream().collect(Collectors.joining("|")),
+                Pattern.CASE_INSENSITIVE
+        );
+        this.flipPat = Pattern.compile(
+                flipStr,
+                Pattern.CASE_INSENSITIVE
+        );
     }
 
     @Override
     public Score play() {
         this.countDown();
-
-        this.matriks.print();
-        this.matriks.printDetails();
         this.startTimer();
 
-        System.out.print("FLIP: ");
-        String cmd = this.scanner.nextLine();
-        Pattern cmdPat = Pattern.compile("(([R|C])([1-" + this.matriks.getMatrixSize() + "])+[ *]?|QUIT|Q)", Pattern.CASE_INSENSITIVE);
-        Matcher cmdMat = cmdPat.matcher(cmd);
-        while(true) {
-            // Find if Valid Cmd Exists
-            while (!cmdMat.find()) {
-                System.out.println();
-                printInformation(InformationDepth.SHORT);
-                cmd = this.scanner.nextLine();
-                cmdMat = cmdPat.matcher(cmd);
-            }
+        String flipCountString = "FLIPS: " + this.numOfFlips;
+        System.out.println(this.matriks);
+        System.out.println(flipCountString);
 
-            // Check if entire Cmd is Only Valid Cmd's
-            StringBuilder cmds = new StringBuilder();
-            do cmds.append(cmdMat.group(1));
-            while (cmdMat.find());
-            if (!cmd.contentEquals(cmds)) {
-                printInformation(InformationDepth.SHORT);
-                cmd = this.scanner.nextLine();
-                cmdMat = cmdPat.matcher(cmd);
+        while(true) {
+            System.out.print("> ");
+            String cmd = this.scanner.nextLine();
+            Matcher valid = validPat.matcher(cmd);
+
+            if (!valid.find())
                 continue;
-            }
+
+            cmd = valid.group().toLowerCase().trim();
+            if (quitStrings.contains(cmd))
+                return this.quit();
 
             this.numOfTurns++;
-            // Reset Matcher
-            cmdMat = cmdPat.matcher(cmd);
-            cmdMat.find();
-            do {
-                switch (cmdMat.group(1).toLowerCase().charAt(0)) {
-                    case 'r' -> {
-                        String rows = cmdMat.group(1).substring(1).trim();
-                        for (int i = 0; i < rows.length(); i++)
-                            matriks.flipRow(Integer.parseInt(rows.substring(i, i + 1)) - 1);
+            Matcher flipMatcher = flipPat.matcher(cmd);
+            while (flipMatcher.find()) {
+                int[] ind = Arrays
+                        .stream(flipMatcher.group(2).split(""))
+                        .mapToInt(i -> Integer.parseInt(i) - 1).toArray();
+                switch(flipMatcher.group(1).toLowerCase()) {
+                    case "r" -> {
+                        for(int i : ind) matriks.flipRow(i);
                         this.numOfFlips++;
                     }
-                    case 'c' -> {
-                        String cols = cmdMat.group(1).substring(1).trim();
-                        for (int i = 0; i < cols.length(); i++)
-                            matriks.flipCol(Integer.parseInt(cols.substring(i, i + 1)) - 1);
+                    case "c" -> {
+                        for(int i : ind) matriks.flipCol(i);
                         this.numOfFlips++;
                     }
-                    case 'q' -> {
-                        return this.quit();
-                    }
-                    default -> {
-                    }
+                    default -> { }
                 }
-            } while (cmdMat.find());
-
-            this.matriks.print();
-            this.matriks.printDetails();
-            System.out.println("FLIPS: " + this.numOfFlips);
+            }
 
             if (!matriks.targetReached()) {
-                System.out.print("FLIP: ");
-                cmd = this.scanner.nextLine();
-                cmdMat = cmdPat.matcher(cmd);
-                System.out.println("------------");
+                System.out.println(this.matriks);
+                System.out.println(flipCountString);
                 continue;
             }
 
             this.stopTimer();
+            this.matriks.print();
             System.out.println();
             this.printResults();
             return new TimeScore(
@@ -171,10 +182,13 @@ public class Matriks extends TimedGame {
     }
 
     private void printResults() {
-        System.out.println("TARGET REACHED!");
-        System.out.println("YOU WIN!");
         int seconds = (int) TimeUnit.SECONDS.convert(this.getElapsedTime(), TimeUnit.MILLISECONDS);
-        System.out.println("TIME: " + seconds/60 + "m " + seconds%60 + "s");
-        System.out.println("FLIPS: " + this.numOfFlips);
+        StringBuilder sb = new StringBuilder();
+        sb
+                .append("SQUARE SOLVED!!\n")
+                .append("TIME: " + seconds/60 + "m " + seconds%60 + "s\n")
+                .append("TURNS: " + this.numOfTurns + "\n")
+                .append("FLIPS: " + this.numOfFlips);
+        System.out.println(sb);
     }
 }

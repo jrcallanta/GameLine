@@ -3,104 +3,124 @@ package game.collection.matriks;
 import java.util.Random;
 
 public class MatriksSquare {
-    private int[][] matrix;
-    private int matrixSize;
-    private int target;
+    final private char[][] matrix;
+    final private int matrixSize;
+    static final char charTL = 'A';
+    static final char charTR = 'B';
+    static final char charBL = 'C';
+    static final char charBR = 'D';
 
-    public MatriksSquare () {
-        new MatriksSquare(2);
-    }
 
     public MatriksSquare (int n) {
         this.matrix = genMatrix(n);
-        this.target = calcTarget();
         this.matrixSize = 2 * n;
     }
 
-    private static int[][] genMatrix(int n) {
-        int size = 2 * n;
-        Random ran = new Random();
-        int[][] matrix = new int[size][size];
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                matrix[row][col] = ran.nextInt(10);
+    private static char[][] genMatrix(int n) {
+        char[][] matriks = new char[2 * n][2 * n];
+
+        // Generate Solved Matrix
+        for (int row = 0; row < 2 * n; row++) {
+            for (int col = 0; col < 2 * n; col++) {
+                if (row < n) {
+                    matriks[row][col] = (col < n) ? charTL : charTR;
+                } else {
+                    matriks[row][col] = (col < n) ? charBL : charBR;
+                }
             }
         }
-        return matrix;
+
+        // Mix Matrix
+        Random ran = new Random();
+        int flips = ran.nextInt(20, 50);
+        do {
+            String bits = String.format(
+                    "%" + (2 * n) + "s",
+                    Integer.toBinaryString(
+                            ran.nextInt(1, (int) Math.pow(2, (2 * n)))
+                    )
+            ).replace(" ", "0");
+
+            for (int i = 0; i < bits.length(); i++) {
+                if (bits.charAt(i) == '1') {
+                    if (flips % 2 == 0)
+                        matriks = flipRow(matriks, i);
+                    else
+                        matriks = flipCol(matriks, i);
+                }
+            }
+        } while (flips-- > 0);
+
+        return matriks;
     }
 
-    private static int[][] genMatrix() {
-        return genMatrix(2);
+    public char[][] flipCol (int col) {
+        return flipCol(this.matrix, col);
     }
 
-    public int[][] flipCol (int col) {
-        int size = this.matrix.length;
+    private static char[][] flipCol (char[][] matrix, int col) {
+        int size = matrix.length;
         if (col > size) {
             System.out.println("ColOutOfBounds");
-            return this.matrix;
+            return matrix;
         }
 
         for (int i = 0; i < size / 2; i++){
             int thisInd = i;
             int thatInd = size-1-i;
-            int thisTemp = matrix[thisInd][col];
-            int thatTemp = matrix[thatInd][col];
+            char thisTemp = matrix[thisInd][col];
+            char thatTemp = matrix[thatInd][col];
             matrix[thisInd][col] = thatTemp;
             matrix[thatInd][col] = thisTemp;
         }
         return matrix;
     }
 
-    public int[][] flipRow (int row) {
-        int size = this.matrix.length;
+    public char[][] flipRow (int row) {
+        return flipRow(this.matrix, row);
+    }
+
+    private static char[][] flipRow (char[][] matrix, int row) {
+        int size = matrix.length;
         if (row > size) {
             System.out.println("RowOutOfBounds");
             return matrix;
         }
 
         for (int j = 0; j < size / 2; j++){
-            int temp = this.matrix[row][j];
-            this.matrix[row][j] = this.matrix[row][size - 1 - j];
-            this.matrix[row][size - 1 - j] = temp;
+            char temp = matrix[row][j];
+            matrix[row][j] = matrix[row][size - 1 - j];
+            matrix[row][size - 1 - j] = temp;
         }
 
         return matrix;
     }
 
-    public int calcCorner() {
-        int sum = 0;
-
-        int size = this.matrix.length;
-        for (int i = 0; i < size / 2; i++){
-            for (int j = 0; j < size / 2; j++){
-                sum += matrix[i][j];
-            }
-        }
-        return sum;
-    }
-
-    private int calcTarget () {
-        int size = this.matrix.length;
-        int[][] maxes = new int[size/2][size/2];
-        int maxMatrixSum = 0;
-
-        for (int i = 0; i < size / 2; i++) {
-            for (int j = 0; j < size / 2; j++) {
-                maxes[i][j] = 0;
-                int UL = matrix[i][j];
-                int BL = matrix[size - 1 - i][j];
-                int UR = matrix[i][size - 1 - j];
-                int BR = matrix[size - 1 - i][size - 1 - j];
-                maxes[i][j] = Math.max(Math.max(UL, BL), Math.max(UR, BR));
-                maxMatrixSum += maxes[i][j];
-            }
-        }
-
-        return maxMatrixSum;
-    }
-
     public boolean targetReached () {
-        return calcCorner() == this.target;
+        int size = this.matrix.length;
+        int head = 0;
+        int tail = matrix.length-1;
+
+        // Check Corners Are Unique
+        if (matrix[head][head] == matrix[head][tail]
+        || matrix[head][tail] == matrix[tail][head]
+        || matrix[tail][head] == matrix[tail][tail]
+        ) return false;
+
+        // Check Quadrants Match Respective Corners
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                char target = (row < size / 2)
+                        ? (col < size / 2)
+                            ? matrix[head][head] : matrix[head][tail]
+                        : (col < size / 2)
+                            ? matrix[tail][head] : matrix[tail][tail];
+
+                if (matrix[row][col] != target) return false;
+            }
+        }
+
+        return true;
     }
 
     public String toString() {
@@ -123,11 +143,6 @@ public class MatriksSquare {
         return sb.toString();
     }
 
-    public void printDetails () {
-        //System.out.println(this);
-        System.out.println("TARGET: " + this.target);
-        System.out.println("CURRENT: " + calcCorner());
-    }
 
     public void print() {
         System.out.println(this);
