@@ -26,7 +26,8 @@ public class Sansa extends TimeLimitGame {
                 "HARD", "[8 bits 90 seconds]");
 
         this.gameInformation = new GameInformation(
-                "[GOAL]: Given two integers, A and B, the XOR operator" +
+                "[GOAL]:\n\n" +
+                        "Given two integers, A and B, the XOR operator" +
                         " uses the exclusive OR operation on each bit pair, A_n and B_n," +
                         " to calculate bit C_n, where n is the bit in the nth place." +
                         " The resulting bits make up the new integer C. The goal is to" +
@@ -34,7 +35,8 @@ public class Sansa extends TimeLimitGame {
                         " expression will spawn using the previous answer. Solve as" +
                         " many expressions within the time provided.",
 
-                "[INSTRUCTION]: Type your guess in the console and" +
+                "[INSTRUCTION]:\n\n" +
+                        "Type your guess in the console and" +
                         " press ENTER to submit. Any input other than an integer will be" +
                         " rejected. Only the correct answer will spawn the next" +
                         " expression.",
